@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="background:transparent;margin:0;padding:0;">
+<audio id="gang_alert" src="sounds/gang_alert.ogg" preload="auto"></audio>
+<script>
+    window.addEventListener('message', function(e) {
+        if (e.data.type === 'playSound') {
+            var audio = document.getElementById(e.data.sound);
+            if (audio) {
+                audio.currentTime = 0;
+                audio.volume = 0.6;
+                audio.play().catch(function(err) {
+                    console.log('Audio play failed:', err);
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>
