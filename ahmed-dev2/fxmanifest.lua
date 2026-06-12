@@ -2,8 +2,8 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
-author 'Ahmad'
-description 'Gang Spray & Turf System for Space City'
+author 'Ahmed'
+description 'Gang Spray'
 version '1.1.0'
 
 shared_scripts {
