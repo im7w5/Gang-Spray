@@ -1,5 +1,3 @@
--- Add these to qb-core/shared/items.lua
-
 gang_spray = {
     name = 'gang_spray',
     label = 'Gang Spray',
@@ -25,3 +23,7 @@ gang_sprayremover = {
     combinable = nil,
     description = 'Remove contested gang sprays.'
 },
+
+
+-- these are the items to put in qbcore/shared/items
+-- if you have any problem, contact me @m7w5
