@@ -1,6 +1,3 @@
--- This file belongs to a separate "gang_flags" feature shipped with the
--- resource. Guarded so it cannot crash the spray system on startup.
-
 if not Config or not Config.FlagItem or type(Config.GetGangColor) ~= 'function' then
     return
 end
