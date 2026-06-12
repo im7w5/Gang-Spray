@@ -20,7 +20,7 @@ Config.ContestBlipName   = "CONTESTED Graffiti"
 Config.AlertSound  = "gang_alert"
 Config.SoundVolume = 0.5
 
-Config.SprayItem        = "gang_spray"         -- removed from inventory after a successful spray
+Config.SprayItem        = "gang_spray"         
 Config.SprayRemoverItem = "gang_sprayremover"
 
 Config.SprayWidth  = 1.4
