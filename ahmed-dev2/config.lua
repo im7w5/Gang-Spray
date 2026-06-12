@@ -25,7 +25,7 @@ Config.SprayRemoverItem = "gang_sprayremover"
 
 Config.SprayWidth  = 1.4
 Config.SprayHeight = 1.4
-Config.SprayScale  = 1.4 -- back-compat
+Config.SprayScale  = 1.4 
 
 Config.WallOffset  = 0.02
 
