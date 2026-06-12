@@ -5,9 +5,6 @@ local LastContestedAt = {}
 local ContestTimers = {}
 local RemoveTimers  = {}
 
------------------------------------------------------------------------
--- Helpers
------------------------------------------------------------------------
 local function fmt(entry, ...)
     if type(entry) == "table" then return entry[1]:format(...), entry[2] end
     return tostring(entry):format(...), "primary"
@@ -91,9 +88,7 @@ local function NotifyGang(gangLabel, entry, withSound)
     end
 end
 
------------------------------------------------------------------------
--- Contest lifecycle
------------------------------------------------------------------------
+
 local function CloseRemovalWindow(id)
     RemoveTimers[id] = nil
     local spray = Sprays[id]
@@ -146,9 +141,7 @@ local function StartContest(id, attackerGang)
     end)
 end
 
------------------------------------------------------------------------
--- Initial DB load + resume pending timers after restart
------------------------------------------------------------------------
+
 MySQL.ready(function()
     MySQL.Async.fetchAll('SELECT * FROM gang_sprays', {}, function(results)
         for _, v in pairs(results) do Sprays[v.id] = UnpackRow(v) end
@@ -185,8 +178,8 @@ MySQL.ready(function()
     end)
 end)
 
------------------------------------------------------------------------
--- Events
+------------------------------------------------------------------
+-- Eventat!
 -----------------------------------------------------------------------
 RegisterNetEvent('spacecity_sprays:server:SaveSpray', function(_gangFromClient, coords, heading, normal)
     local src = source
@@ -341,9 +334,7 @@ RegisterNetEvent('spacecity_sprays:server:RemoveSpray', function(sprayId)
     TriggerClientEvent('spacecity_sprays:client:RemoveSpray', -1, sprayId)
 end)
 
------------------------------------------------------------------------
--- Init
------------------------------------------------------------------------
+
 QBCore.Functions.CreateCallback('spacecity_sprays:server:GetMyGang', function(src, cb)
     cb(GetGangLabel(src))
 end)
@@ -360,9 +351,7 @@ end
 RegisterNetEvent('QBCore:Server:OnPlayerLoaded', function() PushInit(source) end)
 RegisterNetEvent('spacecity_sprays:server:RequestInit', function() PushInit(source) end)
 
------------------------------------------------------------------------
--- Useable items
------------------------------------------------------------------------
+
 QBCore.Functions.CreateUseableItem(Config.SprayItem or "gang_spray", function(source)
     local gang = GetGangLabel(source)
     if not gang then
