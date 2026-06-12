@@ -73,7 +73,6 @@ local function AddGangXP(gangLabel, amount)
     end
 end
 
--- NotifyGang: optionally plays Config.AlertSound for every member
 local function NotifyGang(gangLabel, entry, withSound)
     if not gangLabel then return end
     local msg, kind = fmt(entry)
@@ -111,7 +110,6 @@ local function FinishContest(id)
         { spray.contest_ended_at, id }
     )
     BroadcastSpray(id)
-    -- sound + notify for BOTH gangs at contest end
     NotifyGang(spray.gang,            Config.Notify.ContestFinishedOwner,    true)
     NotifyGang(spray.contesting_gang, Config.Notify.ContestFinishedAttacker, true)
     RemoveTimers[id] = true
@@ -130,7 +128,6 @@ local function StartContest(id, attackerGang)
         { attackerGang, spray.contest_started_at, id }
     )
     BroadcastSpray(id)
-    -- sound + notify for BOTH gangs at contest start
     NotifyGang(spray.gang,   Config.Notify.ContestStartedOwner,    true)
     NotifyGang(attackerGang, Config.Notify.ContestStartedAttacker, true)
     AddGangXP(attackerGang, Config.XP.Contest)
@@ -266,7 +263,6 @@ RegisterNetEvent('spacecity_sprays:server:ContestSpray', function(sprayId)
     if spray.contested then return end
     if not Discovered[attackerGang] or not Discovered[attackerGang][sprayId] then return end
 
-    -- 1 hour cooldown between contests on the same spray
     local lastTime = LastContestedAt[sprayId]
     if lastTime and (os.time() - lastTime) < 3600 then
         local mins = math.ceil((3600 - (os.time() - lastTime)) / 60)
@@ -274,7 +270,6 @@ RegisterNetEvent('spacecity_sprays:server:ContestSpray', function(sprayId)
         return
     end
 
-    -- KSA time = UTC+3, contest window 18:00–00:00 KSA = 15:00–21:00 UTC
     local utcHour = math.floor(os.time() / 3600) % 24
     local ksaHour = (utcHour + 3) % 24
     if ksaHour < 14 or ksaHour >= 24 then
@@ -282,7 +277,6 @@ RegisterNetEvent('spacecity_sprays:server:ContestSpray', function(sprayId)
         return
     end
 
-    -- Minimum 3 members of attacking gang must be online
     local onlineCount = 0
     for _, Player in pairs(QBCore.Functions.GetQBPlayers()) do
         if GetGangLabel(Player.PlayerData.source) == attackerGang then
