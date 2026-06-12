@@ -197,11 +197,10 @@ RegisterNetEvent('spacecity_sprays:server:SaveSpray', function(_gangFromClient, 
         return
     end
 
-    -- Must still have the item in inventory at save-time
     local sprayItemName = Config.SprayItem or "gang_spray"
     local item = Player.Functions.GetItemByName(sprayItemName)
     if not item then
-        Notify(src, Config.Notify.NotInOrg) -- reuse a generic error; swap for your own key if you like
+        Notify(src, Config.Notify.NotInOrg) 
         return
     end
 
@@ -219,7 +218,6 @@ RegisterNetEvent('spacecity_sprays:server:SaveSpray', function(_gangFromClient, 
         }
         TriggerClientEvent('spacecity_sprays:client:SyncNewSpray', -1, Sprays[id])
 
-        -- Remove 1x gang_spray from the player's inventory
         Player.Functions.RemoveItem(sprayItemName, 1)
         if QBCore.Shared and QBCore.Shared.Items and QBCore.Shared.Items[sprayItemName] then
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[sprayItemName], "remove")
