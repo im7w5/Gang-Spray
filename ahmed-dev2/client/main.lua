@@ -9,7 +9,6 @@ local Placing          = false
 local MyGang           = nil
 local function GetMyGang() return MyGang or "none" end
 
--- Notify helper that accepts Config.Notify entries {msg, type} and printf args
 local function notify(entry, ...)
     if type(entry) == "table" then
         QBCore.Functions.Notify(entry[1]:format(...), entry[2] or "primary")
@@ -64,9 +63,7 @@ CreateThread(function()
     if MyGang == nil then TriggerServerEvent('spacecity_sprays:server:RequestInit') end
 end)
 
------------------------------------------------------------------------
--- Geometry helpers
------------------------------------------------------------------------
+
 local function HeadingToNormal(heading)
     local rad = math.rad(heading or 0.0)
     return vector3(math.sin(rad), -math.cos(rad), 0.0)
@@ -109,9 +106,7 @@ local function DrawDecalQuad(bl, br, tr, tl, r, g, b, a, txd, txn)
     )
 end
 
------------------------------------------------------------------------
--- Anim / prop helpers
------------------------------------------------------------------------
+
 local SPRAY_DICT  = "anim@scripted@freemode@postertag@graffiti_spray@male@"
 local SPRAY_CLIP  = "spray_can_var_01_male"
 local CLEAN_DICT  = "timetable@floyd@clean_kitchen@base"
@@ -207,9 +202,6 @@ local function SprayParticleBurst()
         p.x, p.y, p.z, 0.0, 0.0, GetEntityHeading(ped), 0.4, 0.0, 0.0, 0.0)
 end
 
------------------------------------------------------------------------
--- Blips
------------------------------------------------------------------------
 local function RemoveRadiusBlipFor(id)
     if RadiusBlips[id] and DoesBlipExist(RadiusBlips[id]) then RemoveBlip(RadiusBlips[id]) end
     RadiusBlips[id] = nil
@@ -289,9 +281,6 @@ RegisterNetEvent('spacecity_sprays:client:PlayAlert', function()
 end)
 
 
------------------------------------------------------------------------
--- qb-target
------------------------------------------------------------------------
 local RegisteredZones = {}
 
 local function GetSprayHeadingFromNormal(n)
@@ -308,7 +297,7 @@ end
 
 local function InRemovalWindow(spray)
     if not spray.contesting_gang then return false end
-    if spray.contested then return false end                    -- still contested = no removal
+    if spray.contested then return false end                  
     if not spray.contest_ended_at then return false end
 
     local elapsed = GetUnixMs() - spray.contest_ended_at
@@ -389,9 +378,6 @@ local function RefreshAllSprayTargets()
     for _, spray in pairs(ActiveSprays) do RefreshSprayTarget(spray) end
 end
 
------------------------------------------------------------------------
--- Sync events
------------------------------------------------------------------------
 RegisterNetEvent('spacecity_sprays:client:Init', function(sprays, discovered, gang)
     ActiveSprays = sprays or {}
     if gang and gang ~= "" then MyGang = gang end
@@ -465,9 +451,6 @@ RegisterNetEvent('spacecity_sprays:client:RemoveSpray', function(sprayId)
     DiscoveredSprays[sprayId] = nil
 end)
 
------------------------------------------------------------------------
--- Placement
------------------------------------------------------------------------
 RegisterNetEvent('spacecity_sprays:client:StartPlacement', function(gangName)
     if Placing then return end
     local gangData = Config.Gangs[gangName]
@@ -551,9 +534,6 @@ RegisterNetEvent('spacecity_sprays:client:StartPlacement', function(gangName)
     end)
 end)
 
------------------------------------------------------------------------
--- Render graffiti on walls (up to Config.RenderDistance)
------------------------------------------------------------------------
 CreateThread(function()
     while true do
         Wait(0)
@@ -593,9 +573,6 @@ CreateThread(function()
     end
 end)
 
------------------------------------------------------------------------
--- qb-target action handlers
------------------------------------------------------------------------
 function DiscoverSpray(id)
     LoadAnim("amb@medic@standing@kneel@base")
     QBCore.Functions.Progressbar("discover", "Inspecting...", 3000, false, true,
@@ -655,9 +632,6 @@ RegisterNetEvent('spacecity_sprays:client:UseRemover', function()
     end
 end)
 
------------------------------------------------------------------------
--- Camera raycast
------------------------------------------------------------------------
 function RotationToDirection(rotation)
     local a = vector3((math.pi / 180) * rotation.x, (math.pi / 180) * rotation.y, (math.pi / 180) * rotation.z)
     return vector3(
@@ -678,9 +652,6 @@ function RayCastGamePlayCamera(distance)
     return hit == 1, endCoords, surfaceNormal, entity
 end
 
------------------------------------------------------------------------
--- Cleanup
------------------------------------------------------------------------
 AddEventHandler('onResourceStop', function(resource)
     if resource ~= GetCurrentResourceName() then return end
     for id in pairs(RadiusBlips)     do RemoveRadiusBlipFor(id)  end
